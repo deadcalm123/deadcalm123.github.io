@@ -18,29 +18,60 @@ $(function () {
         var gallery2 = gallery.get(1);
         var gallery3 = gallery.get(2);
         var gallery4 = gallery.get(3);
-
-        for (var i = 1; i < 17; i++) {
-            var gallery1Height = [gallery1.scrollHeight, gallery2.scrollHeight, gallery3.scrollHeight, gallery4.scrollHeight];
-
-            if (gallery1.scrollHeight == 0 && gallery2.scrollHeight == 0 && gallery3.scrollHeight == 0 && gallery4.scrollHeight == 0) {
-                $(gallery1).append("<div class='gallery-item'>" +
-                    "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
-                i++;
-                $(gallery2).append("<div class='gallery-item'>" +
-                    "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
-                i++;
-                $(gallery3).append("<div class='gallery-item'>" +
-                    "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
-                i++;
-                $(gallery4).append("<div class='gallery-item'>" +
-                    "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
-            } else {
-                var min = Math.min.apply(Math, gallery1Height);
-                var index = gallery1Height.indexOf(min);
-                $(gallery[index]).append("<div class='gallery-item'>" +
-                    "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        var data = JSON.parse($.ajax({url: "./data/gallery.json", async: false}).responseText);
+        //数据正常
+        if (data.code == 0) {
+            //开始循环
+            for (var i = 0; i < data.data.length; i++) {
+                //获取高度
+                var gallery1Height = [gallery1.scrollHeight, gallery2.scrollHeight, gallery3.scrollHeight, gallery4.scrollHeight];
+                if (gallery1.scrollHeight == 0 && gallery2.scrollHeight == 0 && gallery3.scrollHeight == 0 && gallery4.scrollHeight == 0) {
+                    var item = data.data[i];
+                    $(gallery1).append("<div class='gallery-item'>" +
+                        "<img src='" + item["url"] + "' style='width: 100%;'><span>" + item["message"] + "</span></div>");
+                    i++;
+                    item = data.data[i];
+                    $(gallery2).append("<div class='gallery-item'>" +
+                        "<img src='" + item["url"] + "' style='width: 100%;'><span>" + item["message"] + "</span></div>");
+                    i++;
+                    item = data.data[i];
+                    $(gallery3).append("<div class='gallery-item'>" +
+                        "<img src='" + item["url"] + "' style='width: 100%;'><span>" + item["message"] + "</span></div>");
+                    i++;
+                    item = data.data[i];
+                    $(gallery4).append("<div class='gallery-item'>" +
+                        "<img src='" + item["url"] + "' style='width: 100%;'><span>" + item["message"] + "</span></div>");
+                } else {
+                    var item = data.data[i];
+                    var min = Math.min.apply(Math, gallery1Height);
+                    var index = gallery1Height.indexOf(min);
+                    $(gallery[index]).append("<div class='gallery-item'>" +
+                        "<img src='" + item["url"] + "' style='width: 100%;'><span>" + item["message"] + "</span></div>");
+                }
             }
         }
+        // for (var i = 0; i < data.length; i++) {
+        //     var gallery1Height = [gallery1.scrollHeight, gallery2.scrollHeight, gallery3.scrollHeight, gallery4.scrollHeight];
+        //
+        //     if (gallery1.scrollHeight == 0 && gallery2.scrollHeight == 0 && gallery3.scrollHeight == 0 && gallery4.scrollHeight == 0) {
+        //         $(gallery1).append("<div class='gallery-item'>" +
+        //             "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        //         i++;
+        //         $(gallery2).append("<div class='gallery-item'>" +
+        //             "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        //         i++;
+        //         $(gallery3).append("<div class='gallery-item'>" +
+        //             "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        //         i++;
+        //         $(gallery4).append("<div class='gallery-item'>" +
+        //             "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        //     } else {
+        //         var min = Math.min.apply(Math, gallery1Height);
+        //         var index = gallery1Height.indexOf(min);
+        //         $(gallery[index]).append("<div class='gallery-item'>" +
+        //             "<img src='./img/" + i + ".jpg' style='width: 100%;'><span>aaaa</span></div>");
+        //     }
+        // }
 
         loading = false;
     }
